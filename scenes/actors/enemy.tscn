@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://bkiqbp0fwi6oc"]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_0ho4y"]
+[ext_resource type="Texture2D" uid="uid://d1elup4qd3w2f" path="res://textures/enemy.png" id="1_eiwdu"]
+[ext_resource type="PackedScene" uid="uid://c6l6ldpprvy88" path="res://scenes/utility/hurtbox.tscn" id="3_1hu2g"]
+[ext_resource type="PackedScene" uid="uid://4rk74d6d1bcm" path="res://scenes/utility/hitbox.tscn" id="4_sedsn"]
+[ext_resource type="PackedScene" uid="uid://bsiui8l1nowt6" path="res://scenes/utility/health.tscn" id="5_xu8tl"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x0ikp"]
+radius = 8.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bm5f"]
+size = Vector2(20.5, 28.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lly5c"]
+size = Vector2(21, 28.5)
+
+[node name="Enemy" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_0ho4y")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_eiwdu")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 3)
+shape = SubResource("CapsuleShape2D_x0ikp")
+
+[node name="Hurtbox" parent="." instance=ExtResource("3_1hu2g")]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(1.25, 2.25)
+shape = SubResource("RectangleShape2D_1bm5f")
+
+[node name="Hitbox" parent="." instance=ExtResource("4_sedsn")]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2(1, 2.25)
+shape = SubResource("RectangleShape2D_lly5c")
+
+[node name="Health" parent="." instance=ExtResource("5_xu8tl")]
+hp = 5
+max_hp = 5
+
+[connection signal="hurt" from="Hurtbox" to="Health" method="take_damage"]
+[connection signal="died" from="Health" to="." method="_on_health_died"]
+
+[editable path="Hurtbox"]
+[editable path="Hitbox"]

@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2151nwcvnm7w"]
+
+[ext_resource type="Texture2D" uid="uid://cd4ucl26is8jo" path="res://icon.svg" id="1_36h86"]
+[ext_resource type="PackedScene" uid="uid://4rk74d6d1bcm" path="res://scenes/utility/hitbox.tscn" id="2_kji4b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_piksj"]
+size = Vector2(12, 12)
+
+[node name="Bullet" type="RigidBody2D"]
+gravity_scale = 0.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_36h86")
+
+[node name="Hitbox" parent="." instance=ExtResource("2_kji4b")]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+shape = SubResource("RectangleShape2D_piksj")
+
+[editable path="Hitbox"]

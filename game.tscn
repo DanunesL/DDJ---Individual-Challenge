@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpbcqvtpv44l"]
+
+[ext_resource type="Script" path="res://global.gd" id="1_s666e"]
+[ext_resource type="Texture2D" uid="uid://dwi5ilicpqwci" path="res://textures/background.png" id="1_wndla"]
+[ext_resource type="PackedScene" uid="uid://cpki2uqgdvmwr" path="res://scenes/actors/player.tscn" id="2_unpe2"]
+[ext_resource type="Script" path="res://scripts/utility/enemy_spawner.gd" id="3_knvnm"]
+[ext_resource type="PackedScene" uid="uid://bkiqbp0fwi6oc" path="res://scenes/actors/enemy.tscn" id="3_mohpk"]
+[ext_resource type="PackedScene" uid="uid://crmaubxdx2615" path="res://scenes/wheater/enviroment_handler.tscn" id="5_nd0il"]
+[ext_resource type="PackedScene" uid="uid://dow1c1lomfgvf" path="res://scenes/wheater/lightning_handler.tscn" id="7_xs3je"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_s666e")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("1_wndla")
+region_enabled = true
+region_rect = Rect2(0, 0, 4000, 4000)
+
+[node name="enviroment_Handler" parent="." instance=ExtResource("5_nd0il")]
+
+[node name="Player" parent="." instance=ExtResource("2_unpe2")]
+motion_mode = 1
+
+[node name="EnemySpawner" type="Marker2D" parent="."]
+position = Vector2(171, 91)
+script = ExtResource("3_knvnm")
+enemy_scene = ExtResource("3_mohpk")
+
+[node name="EnemySpawner2" type="Marker2D" parent="."]
+position = Vector2(228, 47)
+script = ExtResource("3_knvnm")
+enemy_scene = ExtResource("3_mohpk")
+
+[node name="Lightning_Handler" parent="." instance=ExtResource("7_xs3je")]
+
+[node name="Lightning_Handler2" parent="." instance=ExtResource("7_xs3je")]
+
+[node name="Lightning_Handler3" parent="." instance=ExtResource("7_xs3je")]
+
+[node name="Lightning_Handler4" parent="." instance=ExtResource("7_xs3je")]

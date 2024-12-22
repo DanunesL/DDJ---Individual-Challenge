@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://dow1c1lomfgvf"]
+
+[ext_resource type="Script" path="res://scripts/utility/lightning_handler.gd" id="1_4ympc"]
+[ext_resource type="PackedScene" uid="uid://fwpufo1a6rdp" path="res://scenes/wheater/Lighting.tscn" id="1_s6iug"]
+[ext_resource type="PackedScene" uid="uid://4rk74d6d1bcm" path="res://scenes/utility/hitbox.tscn" id="3_7s2sy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_okpts"]
+size = Vector2(28.5, 18)
+
+[sub_resource type="Shader" id="Shader_oufbu"]
+code = "shader_type canvas_item;
+
+uniform float fill_amount : hint_range(0.0, 1.0);
+
+void fragment() {
+    // Calculate the distance from the center to create a circular mask
+    vec2 center = vec2(0.5, 0.5);  // The center of the texture
+    float dist = distance(UV, center);
+
+    // If the distance is smaller than the filled amount, make it visible
+    if (dist < fill_amount) {
+        COLOR = vec4(1.0, 0.0, 0.0, 0.5); // Red color for the warning
+    } else {
+        discard; // Hide the area outside the filled portion
+    }
+}
+
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hxpgs"]
+shader = SubResource("Shader_oufbu")
+shader_parameter/fill_amount = null
+
+[node name="Lightning_Handler" type="Node2D"]
+script = ExtResource("1_4ympc")
+
+[node name="Lightning" parent="." instance=ExtResource("1_s6iug")]
+position = Vector2(-189, -113)
+scale = Vector2(0.323333, 0.296243)
+points = PackedVector2Array(590.722, -482.712, 583, 386)
+
+[node name="TimeStrike" type="Timer" parent="."]
+
+[node name="Hitbox" parent="." instance=ExtResource("3_7s2sy")]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-2, 0)
+shape = SubResource("RectangleShape2D_okpts")
+
+[node name="WarningCircle" type="Area2D" parent="."]
+
+[node name="Circle" type="Sprite2D" parent="WarningCircle"]
+material = SubResource("ShaderMaterial_hxpgs")
+
+[connection signal="timeout" from="TimeStrike" to="." method="_on_timer_timeout"]

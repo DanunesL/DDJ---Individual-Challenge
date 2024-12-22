@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://cnedt5u35err5"]
+
+[ext_resource type="Script" path="res://scripts/utility/lighting_strike.gd" id="1_o4gl0"]
+[ext_resource type="PackedScene" uid="uid://4rk74d6d1bcm" path="res://scenes/utility/hitbox.tscn" id="2_77iki"]
+[ext_resource type="Texture2D" uid="uid://uv8g0r07avcy" path="res://textures/raio.png" id="3_oa1xe"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cunli"]
+radius = 9.0
+height = 36.0
+
+[node name="Lighting-Strike" type="Node2D"]
+script = ExtResource("1_o4gl0")
+
+[node name="WarningCircle" type="Node2D" parent="."]
+
+[node name="LightningSprite" type="Sprite2D" parent="."]
+position = Vector2(396, 386)
+scale = Vector2(0.267699, 0.16784)
+texture = ExtResource("3_oa1xe")
+
+[node name="Hitbox" parent="." instance=ExtResource("2_77iki")]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(396, 438)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_cunli")
+debug_color = Color(0.830325, 0, 0.171418, 0.42)
+
+[node name="StrikeTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="StrikeTimer" to="." method="_on_strike_timer_timeout"]

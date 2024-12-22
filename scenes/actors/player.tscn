@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://cpki2uqgdvmwr"]
+
+[ext_resource type="Script" path="res://scripts/utility/health.gd" id="1_2onnn"]
+[ext_resource type="Texture2D" uid="uid://nv5sa37kjox2" path="res://textures/player.png" id="1_6rmni"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_qyssq"]
+[ext_resource type="PackedScene" uid="uid://b2151nwcvnm7w" path="res://scenes/attacks/bullet.tscn" id="2_7h2kb"]
+[ext_resource type="PackedScene" uid="uid://c6l6ldpprvy88" path="res://scenes/utility/hurtbox.tscn" id="3_2il7n"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ei7cq"]
+radius = 7.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vwkwm"]
+size = Vector2(24, 31)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lp6x"]
+bg_color = Color(0.935963, 0.153884, 0.204817, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ckrx2"]
+bg_color = Color(0.498623, 0.858593, 0, 1)
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+script = ExtResource("1_qyssq")
+bullet_scene = ExtResource("2_7h2kb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_6rmni")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 1)
+shape = SubResource("CapsuleShape2D_ei7cq")
+
+[node name="Hurtbox" parent="." instance=ExtResource("3_2il7n")]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(2, 1)
+shape = SubResource("RectangleShape2D_vwkwm")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+
+[node name="Health" type="Node" parent="." node_paths=PackedStringArray("health_bar")]
+script = ExtResource("1_2onnn")
+hp = 50
+max_hp = 50
+health_bar = NodePath("../HealthBar")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -17.0
+offset_top = 18.0
+offset_right = 21.0
+offset_bottom = 22.0
+theme_override_styles/background = SubResource("StyleBoxFlat_6lp6x")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ckrx2")
+max_value = 50.0
+value = 50.0
+show_percentage = false
+
+[connection signal="hurt" from="Hurtbox" to="." method="_on_hurtbox_hurt"]
+[connection signal="hurt" from="Hurtbox" to="Health" method="take_damage"]
+[connection signal="died" from="Health" to="." method="_on_health_died"]
+
+[editable path="Hurtbox"]

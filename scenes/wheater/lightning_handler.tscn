@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://dow1c1lomfgvf"]
+
+[ext_resource type="Script" path="res://scripts/utility/lightning_handler.gd" id="1_4ympc"]
+[ext_resource type="PackedScene" uid="uid://fwpufo1a6rdp" path="res://scenes/wheater/Lighting.tscn" id="1_s6iug"]
+[ext_resource type="PackedScene" uid="uid://4rk74d6d1bcm" path="res://scenes/utility/hitbox.tscn" id="3_7s2sy"]
+[ext_resource type="Texture2D" uid="uid://b7gqs4l1bwcoa" path="res://textures/circulo1.png" id="4_4lxxr"]
+[ext_resource type="Texture2D" uid="uid://cxfeglu0kf1gp" path="res://textures/circulo2.png" id="5_k2fef"]
+[ext_resource type="Texture2D" uid="uid://b872fk4gtsl2r" path="res://textures/circulo3.png" id="6_uajcb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_okpts"]
+size = Vector2(28.5, 18)
+
+[node name="Lightning_Handler" type="Node2D"]
+script = ExtResource("1_4ympc")
+
+[node name="Lightning" parent="." instance=ExtResource("1_s6iug")]
+position = Vector2(-189, -113)
+scale = Vector2(0.323333, 0.296243)
+points = PackedVector2Array(590.722, -482.712, 583, 386)
+
+[node name="TimeStrike" type="Timer" parent="."]
+
+[node name="Hitbox" parent="." instance=ExtResource("3_7s2sy")]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-2, 0)
+shape = SubResource("RectangleShape2D_okpts")
+
+[node name="Circle" type="Sprite2D" parent="."]
+position = Vector2(-2, 0)
+scale = Vector2(0.0897098, 0.117725)
+texture = ExtResource("4_4lxxr")
+
+[node name="Circle2" type="Sprite2D" parent="."]
+position = Vector2(-2, 0)
+scale = Vector2(0.0903694, 0.112434)
+texture = ExtResource("5_k2fef")
+
+[node name="Circle3" type="Sprite2D" parent="."]
+position = Vector2(-2, 3.57628e-07)
+scale = Vector2(0.0897098, 0.116402)
+texture = ExtResource("6_uajcb")
+
+[connection signal="timeout" from="TimeStrike" to="." method="_on_timer_timeout"]
